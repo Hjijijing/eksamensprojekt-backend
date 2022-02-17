@@ -1,0 +1,11 @@
+POST http://localhost:3000/items
+
+Content-Type: application/json
+
+{
+    "itemName": "Din mor",
+    "description": "En fed so"
+}
+
+
+###
