@@ -1,5 +1,4 @@
-POST http://localhost:3000/items
-
+POST http://localhost:3000/items HTTP/1.1
 Content-Type: application/json
 
 {
@@ -9,3 +8,58 @@ Content-Type: application/json
 
 
 ###
+
+POST http://localhost:3000/items
+Content-Type: application/json
+
+{
+    "itemName": "Endnu en so",
+    "description": "En meget fed so"
+}
+
+
+###
+
+GET http://localhost:3000/items
+
+###
+
+PUT http://localhost:3000/items/620e7f54204a15ab5f227304
+Content-Type: application/json
+
+{
+    "itemName": "Endnu en so",
+    "description": "En ekstremt fed so",
+    "isContainer": "true"
+}
+
+###
+
+PUT http://localhost:3000/items/620e71c7ce2b23a6290f1977
+Content-Type: application/json
+
+{
+    "storedIn": "620e7f54204a15ab5f227304"
+}
+
+###
+
+PUT http://localhost:3000/items/620e7f4e204a15ab5f227302
+Content-Type: application/json
+
+{
+    "storedIn": "620e7f54204a15ab5f227304"
+}
+
+###
+
+PUT http://localhost:3000/items/620e7f54204a15ab5f227304
+Content-Type: application/json
+
+{
+    "isContainer": "false"
+}
+
+###
+
+DELETE http://localhost:3000/items/620e7e41204a15ab5f2272fc

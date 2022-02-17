@@ -21,7 +21,7 @@ mongoose.connect(
   (err) => {
     if (err) {
       console.error("Connection to mongodb failed");
-      console.error(err.errmsg);
+      console.error(err);
       process.abort();
     }
     app.listen(port, () => {
