@@ -15,6 +15,10 @@ async function createCache() {
 async function createItem(itemData) {
   if (itemData == null) return;
 
+  if (itemData.storedIn) {
+    if (!itemExists(itemData.storedIn)) itemData.storedIn = null;
+  }
+
   ItemSchema.create(itemData, function (err, item) {
     if (err) {
       console.log(err);
@@ -29,6 +33,10 @@ function getItem(id) {
   return cache.find((item) => {
     return item._id.toString() == id.toString();
   });
+}
+
+function itemExists(id) {
+  return getItem(id) != null;
 }
 
 function getCacheIndexOfItem(id) {

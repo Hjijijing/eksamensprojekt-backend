@@ -4,11 +4,11 @@ const database = require("../database/database");
 
 //Get items
 router.get("/", (req, res) => {
-  console.log(database.getItems());
   res.json(database.getItems());
 });
 
 router.post("/", (req, res) => {
+  console.log(req.body);
   database.createItem(req.body);
   res.sendStatus(200);
 });
