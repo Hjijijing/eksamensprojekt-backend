@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
 const database = require("./database/database");
 const app = express();
@@ -6,6 +7,7 @@ const mongoose = require("mongoose");
 
 const itemRoute = require("./routes/itemRoute.js");
 
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/items", itemRoute);
