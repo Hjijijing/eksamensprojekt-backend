@@ -17,6 +17,11 @@ const itemSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  image: {
+    data: Buffer,
+    contentType: String,
+    default: "",
+  },
 });
 
 module.exports = new mongoose.model("Item", itemSchema);
