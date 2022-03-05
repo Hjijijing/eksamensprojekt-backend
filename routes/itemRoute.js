@@ -4,29 +4,41 @@ const database = require("../database/database");
 const multer = require("multer");
 const upload = multer();
 
+const parseItem = (req, res, next) => {
+  if (req.file) {
+    req.image = { data: req.file.buffer, contentType: req.file.mimetype };
+  }
+  if (req.body.item) {
+    req.item = JSON.parse(req.body.item);
+  }
+
+  next();
+};
+
 //Get items
 router.get("/", (req, res) => {
   res.json(database.getItems());
 });
 
-router.post("/", (req, res) => {
-  console.log(req.body);
-  database.createItem(req.body);
+//Create items
+router.post("/", upload.single("image"), parseItem, (req, res) => {
+  const itemData = { image: req.image, ...req.item };
+  console.log(itemData);
+  database.createItem(itemData);
   res.sendStatus(200);
 });
 
-router.put("/:id/", (req, res) => {
-  database.updateItem(req.params.id, req.body);
+//Update items
+router.put("/:id/", upload.single("image"), parseItem, (req, res) => {
+  const newItemData = { image: req.image, ...req.item };
+  database.updateItem(req.params.id, newItemData);
   res.sendStatus(200);
 });
 
+//Delte items
 router.delete("/:id/", (req, res) => {
   database.deleteItem(req.params.id);
   res.sendStatus(200);
-});
-
-router.post("/test/", upload.single("image"), (req, res) => {
-  console.log(req.file);
 });
 
 module.exports = router;
