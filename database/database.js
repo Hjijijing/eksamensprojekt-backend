@@ -81,7 +81,7 @@ async function updateItem(id, newItemData) {
     if (storeIn.storedIn == id) return; //Cannot store inside container that is stored inside this: infinite loop.
   }
 
-  if (newItemData.isContainer != null && newItemData.isContainer == "false") {
+  if (newItemData.isContainer != null && newItemData.isContainer == false) {
     const storedInItem = getItemsStoredIn(id);
     storedInItem.forEach((item) => {
       updateItem(item._id, { storedIn: null });
