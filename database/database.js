@@ -51,7 +51,7 @@ function getCacheIndexOfItem(id) {
 }
 
 function updateItemInCache(id, newItem) {
-  console.log("Updating item " + newItem);
+  // console.log("Updating item " + newItem);
   const index = getCacheIndexOfItem(id);
   if (index > -1) cache[index] = newItem;
 }
@@ -77,6 +77,8 @@ async function updateItem(id, newItemData) {
 
   if (newItemData.storedIn) {
     const storeIn = getItem(newItemData.storedIn);
+    console.log(newItemData.storedIn);
+    if (!storeIn) return;
     if (!storeIn.isContainer) return; //Cannot store in non-container
     if (storeIn.storedIn == id) return; //Cannot store inside container that is stored inside this: infinite loop.
   }

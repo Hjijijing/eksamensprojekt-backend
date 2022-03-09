@@ -23,11 +23,11 @@ router.get("/", (req, res) => {
 //Create items
 router.post("/", upload.single("image"), parseItem, (req, res) => {
   const itemData = { image: req.image, ...req.item };
-  console.log(itemData);
   database.createItem(itemData);
   res.sendStatus(200);
 });
 
+//TODO: Only put changes and not everything
 //Update items
 router.put("/:id/", upload.single("image"), parseItem, (req, res) => {
   const newItemData = { image: req.image, ...req.item };
