@@ -3,6 +3,7 @@ const router = express.Router();
 const database = require("../database/database");
 const multer = require("multer");
 const upload = multer();
+const getUser = require("../firebase/firebaseAuth");
 
 const parseItem = (req, res, next) => {
   if (req.file) {
@@ -33,6 +34,10 @@ router.put("/:id/", upload.single("image"), parseItem, (req, res) => {
   const newItemData = { image: req.image, ...req.item };
   database.updateItem(req.params.id, newItemData);
   res.sendStatus(200);
+});
+
+router.get("/test", getUser, (req, res) => {
+  res.sendStatus(201);
 });
 
 //Delte items
