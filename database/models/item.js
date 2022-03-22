@@ -23,6 +23,10 @@ const itemSchema = new mongoose.Schema(
       contentType: String,
       default: "",
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: null,
+    },
   },
   { timestamps: true }
 );

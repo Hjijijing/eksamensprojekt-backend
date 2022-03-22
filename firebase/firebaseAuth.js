@@ -1,4 +1,5 @@
 const admin = require("./firebaseConfig");
+const { createOrFindUser } = require("../database/database");
 
 async function getUser(req, res, next) {
   try {
@@ -7,7 +8,16 @@ async function getUser(req, res, next) {
     const decodedValue = await admin.auth().verifyIdToken(token);
 
     if (decodedValue) {
-      console.log(decodedValue);
+      const user = await createOrFindUser(
+        decodedValue.user_id,
+        decodedValue.name
+      );
+
+      if (!user) {
+        throw new Error();
+      }
+
+      req.user = user;
       return next();
     }
     return res.sendStatus(401);
