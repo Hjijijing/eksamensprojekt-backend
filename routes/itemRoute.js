@@ -3,7 +3,7 @@ const router = express.Router();
 const database = require("../database/database");
 const multer = require("multer");
 const upload = multer();
-const getUser = require("../firebase/firebaseAuth");
+const { getUser, requireAuth } = require("../firebase/firebaseAuth");
 
 const parseItem = (req, res, next) => {
   if (req.file) {
@@ -26,19 +26,33 @@ router.get("/user", getUser, (req, res) => {
 });
 
 //Create items
-router.post("/", upload.single("image"), parseItem, getUser, (req, res) => {
-  const itemData = { image: req.image, ...req.item };
-  database.createItem(itemData, req.user);
-  res.sendStatus(200);
-});
+router.post(
+  "/",
+  upload.single("image"),
+  parseItem,
+  getUser,
+  requireAuth,
+  (req, res) => {
+    const itemData = { image: req.image, ...req.item };
+    database.createItem(itemData, req.user);
+    res.sendStatus(200);
+  }
+);
 
 //TODO: Only put changes and not everything
 //Update items
-router.put("/:id/", upload.single("image"), parseItem, getUser, (req, res) => {
-  const newItemData = { image: req.image, ...req.item };
-  database.updateItem(req.params.id, newItemData, req.user);
-  res.sendStatus(200);
-});
+router.put(
+  "/:id/",
+  upload.single("image"),
+  parseItem,
+  getUser,
+  requireAuth,
+  (req, res) => {
+    const newItemData = { image: req.image, ...req.item };
+    database.updateItem(req.params.id, newItemData, req.user);
+    res.sendStatus(200);
+  }
+);
 
 // router.get("/test", getUser, (req, res) => {
 //   console.log(req.user);
@@ -46,7 +60,7 @@ router.put("/:id/", upload.single("image"), parseItem, getUser, (req, res) => {
 // });
 
 //Delte items
-router.delete("/:id/", getUser, (req, res) => {
+router.delete("/:id/", getUser, requireAuth, (req, res) => {
   database.deleteItem(req.params.id, req.user);
   res.sendStatus(200);
 });

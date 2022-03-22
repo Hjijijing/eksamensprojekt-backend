@@ -5,25 +5,33 @@ async function getUser(req, res, next) {
   try {
     const token = req.headers.authorization.split(" ")[1];
 
-    const decodedValue = await admin.auth().verifyIdToken(token);
+    if (token && token !== "null" && token.length > 0) {
+      const decodedValue = await admin.auth().verifyIdToken(token);
 
-    if (decodedValue) {
-      const user = await createOrFindUser(
-        decodedValue.user_id,
-        decodedValue.name
-      );
+      if (decodedValue) {
+        const user = await createOrFindUser(
+          decodedValue.user_id,
+          decodedValue.name
+        );
 
-      if (!user) {
-        throw new Error();
+        req.user = user;
       }
-
-      req.user = user;
-      return next();
     }
-    return res.sendStatus(401);
-  } catch {
+
+    return next();
+  } catch (err) {
+    console.log(err);
     return res.sendStatus(500);
   }
 }
 
-module.exports = getUser;
+async function requireAuth(req, res, next) {
+  if (req.user) {
+    return next();
+  } else {
+    return res.sendStatus(401);
+  }
+}
+
+module.exports.getUser = getUser;
+module.exports.requireAuth = requireAuth;
