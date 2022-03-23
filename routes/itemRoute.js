@@ -16,6 +16,12 @@ const parseItem = (req, res, next) => {
   next();
 };
 
+const printReq = (req, res, next) => {
+  console.log(req.body.image);
+  console.log(typeof req.body.image);
+  return next();
+};
+
 //Get items
 router.get("/", getUser, (req, res) => {
   res.json(database.getItems(req.user));
@@ -44,6 +50,7 @@ router.post(
 router.put(
   "/:id/",
   upload.single("image"),
+  printReq,
   parseItem,
   getUser,
   requireAuth,

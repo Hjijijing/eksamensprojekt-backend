@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption");
 
 const itemSchema = new mongoose.Schema(
   {
@@ -30,5 +31,14 @@ const itemSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+const encKey = process.env.ENCRYPTION_KEY;
+const signKey = process.env.SIGNING_KEY;
+
+itemSchema.plugin(encrypt, {
+  requireAuthenticationCode: false,
+  encryptionKey: encKey,
+  signingKey: signKey,
+});
 
 module.exports = new mongoose.model("Item", itemSchema);

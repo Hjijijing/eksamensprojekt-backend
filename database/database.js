@@ -83,9 +83,9 @@ function getItemsStoredIn(id) {
 }
 
 async function updateItem(id, newItemData, user) {
+  console.log(newItemData);
   if (user == null) return;
   if (newItemData == null) return;
-
   if (!idBelongsToUser(user, id)) return;
 
   if (newItemData.storedIn) {
@@ -103,11 +103,17 @@ async function updateItem(id, newItemData, user) {
     });
   }
 
-  const newItem = await ItemSchema.findOneAndUpdate({ _id: id }, newItemData, {
-    new: true,
-  });
+  let doc = await ItemSchema.findById(id);
 
-  updateItemInCache(id, newItem);
+  for (let key in newItemData) {
+    // console.log(key);
+    // console.log(newItemData[key]);
+    doc[key] = newItemData[key];
+  }
+
+  await doc.save();
+
+  updateItemInCache(id, doc);
 }
 
 async function deleteItem(id, user) {
