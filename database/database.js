@@ -93,7 +93,8 @@ async function updateItem(id, newItemData, user) {
     console.log(newItemData.storedIn);
     if (!storeIn) return;
     if (!storeIn.isContainer) return; //Cannot store in non-container
-    if (storeIn.storedIn == id) return; //Cannot store inside container that is stored inside this: infinite loop.
+    if (storeIn.storedIn && storeIn.storedIn.toString() == id.toString()) return; //Cannot store inside container that is stored inside this: infinite loop.
+    if (storeIn._id.toString() == id.toString()) return; //Cannot store inside self.
   }
 
   if (newItemData.isContainer != null && newItemData.isContainer == false) {
